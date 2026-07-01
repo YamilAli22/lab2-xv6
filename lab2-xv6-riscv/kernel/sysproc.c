@@ -89,3 +89,39 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+
+uint64
+sys_sem_open(void)
+{
+  int sem, value;
+  argint(0, &sem);
+  argint(1, &value);
+  return (uint64)sem_open(sem, value);
+}
+
+uint64
+sys_sem_close(void)
+{
+  int sem;
+  argint(0, &sem);
+  return (uint64)sem_close(sem);
+}
+
+uint64
+sys_sem_up(void)
+{
+  int sem;
+  argint(0, &sem);
+  return (uint64)sem_up(sem);
+}
+
+uint64
+sys_sem_down(void)
+{
+  int sem;
+  argint(0, &sem);
+  return (uint64)sem_down(sem);
+}
+
+// argint(i, * int) obtiene un argumento pasado desde el user mode cuando se realizó una syscall y lo guarda en la variable que le pasamos como segundo argumento (* int)
+

@@ -1,3 +1,4 @@
+#include "types.h"
 #include "spinlock.h"
 #include "param.h"
 #include "types.h"
@@ -98,14 +99,10 @@ sem_up(int sem) {
     return 0;
   }
   
-  if (sem_table[sem].value == sem_table[sem].max_value) {
-    printf("Error, tratando de hacer up de un semaforo que esta en su valor inicial\n");
-    release(&(sem_table[sem].s_lock));
-    return 0;
+  if (sem_table[sem].value == 0) {
+    wakeup(&(sem_table[sem])); // acá es como si avisara que hay lugar para que entren a usar X recurso, aunque podria no haber procesos esperando para escuchar ese aviso
   }
-
   sem_table[sem].value++;
-  wakeup(&(sem_table[sem])); // acá es como si avisara que hay lugar para que entren a usar X recurso, aunque podria no haber procesos esperando para escuchar ese aviso
   release(&(sem_table[sem].s_lock));
 
   return 1;
